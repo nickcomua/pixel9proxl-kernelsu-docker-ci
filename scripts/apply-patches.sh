@@ -84,10 +84,10 @@ chmod +x aosp/scripts/config
 for opt in PID_NS USER_NS CGROUP_PIDS CGROUP_DEVICE BRIDGE_NETFILTER NETFILTER_XT_MATCH_ADDRTYPE OVERLAY_FS VETH BRIDGE NET_NS; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -e "$opt"
 done
-for opt in BT BT_QCA BT_RFCOMM BT_BNEP BT_HIDP BT_HCIBTUSB BT_HCIBTSDIO BT_HCIUART BT_HCIVHCI; do
+for opt in BT BT_RFCOMM BT_HIDP BT_HCIBTSDIO BT_HCIUART; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -m "$opt"
 done
-for opt in PPTP USB_RTL8150 TIPC; do
+for opt in BT_BNEP BT_HCIBTUSB BT_HCIVHCI BT_QCA PPTP USB_RTL8150 TIPC; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -d "$opt"
 done
 python3 - <<'PY'
@@ -113,12 +113,9 @@ for line in p.read_text().splitlines():
 bt_lines = [
     "CONFIG_BT=m",
     "CONFIG_BT_RFCOMM=m",
-    "CONFIG_BT_BNEP=m",
     "CONFIG_BT_HIDP=m",
-    "CONFIG_BT_HCIBTUSB=m",
     "CONFIG_BT_HCIBTSDIO=m",
     "CONFIG_BT_HCIUART=m",
-    "CONFIG_BT_HCIVHCI=m",
 ]
 lines = [line for line in lines if not line.startswith("CONFIG_BT")]
 out = []
@@ -144,27 +141,10 @@ disabled_modules = {
     "net/tipc/diag.ko",
     "net/tipc/tipc.ko",
 }
-extra_modules = [
-    "drivers/bluetooth/btintel.ko",
-    "drivers/bluetooth/btrtl.ko",
-    "drivers/bluetooth/btusb.ko",
-    "drivers/bluetooth/hci_vhci.ko",
-    "net/bluetooth/bnep/bnep.ko",
-]
 lines = []
 for line in p.read_text().splitlines():
     if any(f'"{module}"' in line for module in disabled_modules):
         continue
     lines.append(line)
-for module in extra_modules:
-    entry = f'    "{module}",'
-    if entry not in lines:
-        insert_at = next(
-            (idx for idx, line in enumerate(lines) if line.strip().startswith('"') and line.strip() > f'"{module}",'),
-            None,
-        )
-        if insert_at is None:
-            insert_at = len(lines) - 1
-        lines.insert(insert_at, entry)
 p.write_text("\n".join(lines) + "\n")
 PY
