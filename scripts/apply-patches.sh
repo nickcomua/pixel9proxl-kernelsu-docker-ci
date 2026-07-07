@@ -24,7 +24,33 @@ printf '%s\n' "-gbd23337e42e7-ab14791245" > aosp/.scmversion
 )
 
 patch -p1 < "$repo_root/patches/aosp-build-tool-filegroups.patch"
-patch -p1 < "$repo_root/patches/caimito-docker-defconfig.patch"
+
+python3 - <<'PY'
+from pathlib import Path
+
+build = Path("private/devices/google/caimito/BUILD.bazel")
+text = build.read_text()
+needle = '        "caimito_defconfig",\n'
+if '        "docker_defconfig",\n' not in text:
+    text = text.replace(needle, needle + '        "docker_defconfig",\n', 1)
+build.write_text(text)
+
+Path("private/devices/google/caimito/docker_defconfig").write_text("""\
+CONFIG_PID_NS=y
+CONFIG_USER_NS=y
+CONFIG_CGROUP_PIDS=y
+CONFIG_CGROUP_DEVICE=y
+CONFIG_BRIDGE_NETFILTER=y
+CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y
+
+# These optional modules fail modpost in this GKI tree because they reference
+# non-exported helpers. They are not needed for Docker/container support.
+# CONFIG_PPTP is not set
+# CONFIG_USB_RTL8150 is not set
+# CONFIG_BT is not set
+# CONFIG_TIPC is not set
+""")
+PY
 
 python3 "$repo_root/scripts/patch-common-kernels.py" build/kernel/kleaf/common_kernels.bzl
 
@@ -53,6 +79,31 @@ for line in p.read_text().splitlines():
     if line in remove_exact:
         continue
     if any(line.startswith(prefix) for prefix in remove_prefixes):
+        continue
+    lines.append(line)
+p.write_text("\n".join(lines) + "\n")
+PY
+
+python3 - <<'PY'
+from pathlib import Path
+
+p = Path("aosp/modules.bzl")
+disabled_modules = {
+    "drivers/bluetooth/btbcm.ko",
+    "drivers/bluetooth/btqca.ko",
+    "drivers/bluetooth/btsdio.ko",
+    "drivers/bluetooth/hci_uart.ko",
+    "drivers/net/ppp/pptp.ko",
+    "drivers/net/usb/rtl8150.ko",
+    "net/bluetooth/bluetooth.ko",
+    "net/bluetooth/hidp/hidp.ko",
+    "net/bluetooth/rfcomm/rfcomm.ko",
+    "net/tipc/diag.ko",
+    "net/tipc/tipc.ko",
+}
+lines = []
+for line in p.read_text().splitlines():
+    if any(f'"{module}"' in line for module in disabled_modules):
         continue
     lines.append(line)
 p.write_text("\n".join(lines) + "\n")
