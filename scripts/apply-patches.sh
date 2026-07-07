@@ -144,10 +144,27 @@ disabled_modules = {
     "net/tipc/diag.ko",
     "net/tipc/tipc.ko",
 }
+extra_modules = [
+    "drivers/bluetooth/btintel.ko",
+    "drivers/bluetooth/btrtl.ko",
+    "drivers/bluetooth/btusb.ko",
+    "drivers/bluetooth/hci_vhci.ko",
+    "net/bluetooth/bnep/bnep.ko",
+]
 lines = []
 for line in p.read_text().splitlines():
     if any(f'"{module}"' in line for module in disabled_modules):
         continue
     lines.append(line)
+for module in extra_modules:
+    entry = f'    "{module}",'
+    if entry not in lines:
+        insert_at = next(
+            (idx for idx, line in enumerate(lines) if line.strip().startswith('"') and line.strip() > f'"{module}",'),
+            None,
+        )
+        if insert_at is None:
+            insert_at = len(lines) - 1
+        lines.insert(insert_at, entry)
 p.write_text("\n".join(lines) + "\n")
 PY
