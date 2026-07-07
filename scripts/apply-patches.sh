@@ -23,10 +23,37 @@ printf '%s\n' "-gbd23337e42e7-ab14791245" > aosp/.scmversion
   cp -a KernelSU-Next/uapi drivers/kernelsu/uapi
 )
 
-patch -p1 < "$repo_root/patches/aosp-build-tool-filegroups.patch"
-
 python3 - <<'PY'
 from pathlib import Path
+
+filegroups = {
+    "aosp/tools/bpf/resolve_btfids/BUILD.bazel": ("resolve_btfids_sources", True),
+    "aosp/tools/build/BUILD.bazel": ("build_tool_sources", False),
+    "aosp/tools/lib/bpf/BUILD.bazel": ("libbpf_sources", True),
+    "aosp/tools/lib/subcmd/BUILD.bazel": ("libsubcmd_sources", True),
+}
+
+for path, (name, exclude_archives) in filegroups.items():
+    excludes = [
+        "BUILD.bazel",
+        "**/*.cmd",
+        "**/*.d",
+        "**/*.o",
+    ]
+    if exclude_archives:
+        excludes.append("**/*.a")
+    Path(path).write_text(
+        'package(default_visibility = ["//visibility:public"])\n\n'
+        "filegroup(\n"
+        f'    name = "{name}",\n'
+        "    srcs = glob(\n"
+        '        ["**"],\n'
+        "        exclude = [\n"
+        + "".join(f'            "{item}",\n' for item in excludes)
+        + "        ],\n"
+        "    ),\n"
+        ")\n"
+    )
 
 build = Path("private/devices/google/caimito/BUILD.bazel")
 text = build.read_text()

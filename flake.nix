@@ -27,6 +27,12 @@
     flake-utils.lib.eachSystem ["aarch64-darwin" "x86_64-linux"] (
       system: let
         pkgs = import nixpkgs {inherit system;};
+        kernelBazel = pkgs.bazel_7;
+        kernelJdk = pkgs.jdk21_headless;
+        kernelBazelProgram =
+          if pkgs.stdenv.hostPlatform.isDarwin && pkgs.stdenv.hostPlatform.isAarch64
+          then "${kernelBazel}/bin/.bazel-${kernelBazel.version}-darwin-arm64-wrapped"
+          else "${kernelBazel}/bin/bazel";
 
         kernelHostTools = with pkgs; [
           bash
@@ -62,28 +68,40 @@
 
         kernelBuild = pkgs.writeShellApplication {
           name = "pixel-kernel-build";
-          runtimeInputs = kernelHostTools;
+          runtimeInputs = kernelHostTools ++ [kernelBazel kernelJdk];
           text = ''
+            export KLEAF_NIX_BAZEL="${kernelBazelProgram}"
+            export KLEAF_NIX_JDK="${kernelJdk}"
             exec ${./scripts/nix-build.sh} "$@"
           '';
         };
       in {
         packages.default = kernelBuild;
+        packages.bazel = kernelBazel;
+        packages.kernel-bazel = kernelBazel;
         packages.kernel-build = kernelBuild;
 
         apps.default = {
           type = "app";
           program = "${kernelBuild}/bin/pixel-kernel-build";
         };
+        apps.bazel = {
+          type = "app";
+          program = kernelBazelProgram;
+        };
+        apps.kernel-bazel = self.apps.${system}.bazel;
         apps.kernel-build = self.apps.${system}.default;
 
         devShells.default = pkgs.mkShell {
-          packages = kernelHostTools;
+          packages = kernelHostTools ++ [kernelBazel kernelJdk];
           SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+          KLEAF_NIX_BAZEL = kernelBazelProgram;
+          KLEAF_NIX_JDK = "${kernelJdk}";
           shellHook = ''
             echo "Pixel kernel Nix shell"
+            echo "Bazel: ${kernelBazelProgram}"
             echo "Build: nix run .#kernel-build -- work/caimito"
-            echo "Existing tree: SKIP_SYNC=1 SKIP_PATCHES=1 nix run .#kernel-build -- /Volumes/dev/caimito"
+            echo "Native probe: USE_NIX_BAZEL=1 SKIP_SYNC=1 SKIP_PATCHES=1 nix run .#kernel-build -- /Volumes/dev/caimito"
           '';
         };
 
