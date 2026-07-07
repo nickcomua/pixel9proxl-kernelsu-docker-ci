@@ -38,3 +38,5 @@ Artifacts are copied to `artifacts/`.
 ## Notes
 
 This repo stores only scripts and patches. It does not vendor Google's kernel source tree or local build outputs.
+
+Current status: the device dist build completes and produces images/modules, but the direct source GKI `boot.img` rebuild is still being debugged. Do not flash CI artifacts until the `boot.img` kernel string is verified to match the custom source kernel.
