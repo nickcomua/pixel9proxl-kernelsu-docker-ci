@@ -47,7 +47,6 @@ CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y
 # non-exported helpers. They are not needed for Docker/container support.
 # CONFIG_PPTP is not set
 # CONFIG_USB_RTL8150 is not set
-# CONFIG_BT is not set
 # CONFIG_TIPC is not set
 """)
 PY
@@ -58,16 +57,18 @@ chmod +x aosp/scripts/config
 for opt in PID_NS USER_NS CGROUP_PIDS CGROUP_DEVICE BRIDGE_NETFILTER NETFILTER_XT_MATCH_ADDRTYPE OVERLAY_FS VETH BRIDGE NET_NS; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -e "$opt"
 done
-for opt in PPTP USB_RTL8150 BT TIPC; do
+for opt in BT BT_RFCOMM BT_BNEP BT_HIDP BT_HCIBTUSB BT_HCIBTSDIO BT_HCIUART BT_HCIVHCI; do
+  aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -m "$opt"
+done
+for opt in PPTP USB_RTL8150 TIPC; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -d "$opt"
 done
 python3 - <<'PY'
 from pathlib import Path
 p = Path("aosp/arch/arm64/configs/gki_defconfig")
-remove_prefixes = ("CONFIG_BT_",)
+remove_prefixes = ()
 remove_exact = {
     "# CONFIG_TIPC is not set",
-    "# CONFIG_BT is not set",
     "# CONFIG_PPTP is not set",
     "# CONFIG_USB_RTL8150 is not set",
     "CONFIG_PID_NS=y",
@@ -81,7 +82,27 @@ for line in p.read_text().splitlines():
     if any(line.startswith(prefix) for prefix in remove_prefixes):
         continue
     lines.append(line)
-p.write_text("\n".join(lines) + "\n")
+bt_lines = [
+    "CONFIG_BT=m",
+    "CONFIG_BT_RFCOMM=m",
+    "CONFIG_BT_BNEP=m",
+    "CONFIG_BT_HIDP=m",
+    "CONFIG_BT_HCIBTUSB=m",
+    "CONFIG_BT_HCIBTSDIO=m",
+    "CONFIG_BT_HCIUART=m",
+    "CONFIG_BT_HCIVHCI=m",
+]
+lines = [line for line in lines if not line.startswith("CONFIG_BT")]
+out = []
+inserted = False
+for line in lines:
+    out.append(line)
+    if line == "CONFIG_CAN=m" and not inserted:
+        out.extend(bt_lines)
+        inserted = True
+if not inserted:
+    out.extend(bt_lines)
+p.write_text("\n".join(out) + "\n")
 PY
 
 python3 - <<'PY'
@@ -89,15 +110,8 @@ from pathlib import Path
 
 p = Path("aosp/modules.bzl")
 disabled_modules = {
-    "drivers/bluetooth/btbcm.ko",
-    "drivers/bluetooth/btqca.ko",
-    "drivers/bluetooth/btsdio.ko",
-    "drivers/bluetooth/hci_uart.ko",
     "drivers/net/ppp/pptp.ko",
     "drivers/net/usb/rtl8150.ko",
-    "net/bluetooth/bluetooth.ko",
-    "net/bluetooth/hidp/hidp.ko",
-    "net/bluetooth/rfcomm/rfcomm.ko",
     "net/tipc/diag.ko",
     "net/tipc/tipc.ko",
 }
