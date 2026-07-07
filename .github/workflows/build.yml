@@ -1,0 +1,44 @@
+name: Build Pixel kernel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install host packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            bc bison build-essential cpio curl flex git libelf-dev libssl-dev \
+            lld python3 rsync unzip xz-utils zip
+
+      - name: Sync source
+        run: ./scripts/sync-source.sh work/caimito
+
+      - name: Apply KernelSU and Docker patches
+        run: ./scripts/apply-patches.sh work/caimito
+
+      - name: Build kernel artifacts
+        run: ./scripts/build.sh work/caimito
+
+      - name: Upload images
+        uses: actions/upload-artifact@v4
+        with:
+          name: pixel9proxl-kernelsu-next-docker-images
+          path: |
+            artifacts/boot.img
+            artifacts/vendor_kernel_boot.img
+            artifacts/dtbo.img
+            artifacts/vendor_dlkm.img
+            artifacts/system_dlkm.img
+            artifacts/Image
+            artifacts/.config
+          if-no-files-found: error
+          retention-days: 14

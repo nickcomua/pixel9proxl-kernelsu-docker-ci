@@ -1,0 +1,79 @@
+diff --git a/aosp/tools/bpf/resolve_btfids/BUILD.bazel b/aosp/tools/bpf/resolve_btfids/BUILD.bazel
+new file mode 100644
+--- /dev/null
++++ b/aosp/tools/bpf/resolve_btfids/BUILD.bazel
+@@ -0,0 +1,14 @@
++package(default_visibility = ["//visibility:public"])
++
++filegroup(
++    name = "resolve_btfids_sources",
++    srcs = glob(
++        ["**"],
++        exclude = [
++            "BUILD.bazel",
++            "**/*.cmd",
++            "**/*.d",
++            "**/*.o",
++            "**/*.a",
++        ],
++    ),
++)
+diff --git a/aosp/tools/build/BUILD.bazel b/aosp/tools/build/BUILD.bazel
+new file mode 100644
+--- /dev/null
++++ b/aosp/tools/build/BUILD.bazel
+@@ -0,0 +1,13 @@
++package(default_visibility = ["//visibility:public"])
++
++filegroup(
++    name = "build_tool_sources",
++    srcs = glob(
++        ["**"],
++        exclude = [
++            "BUILD.bazel",
++            "**/*.cmd",
++            "**/*.d",
++            "**/*.o",
++        ],
++    ),
++)
+diff --git a/aosp/tools/lib/bpf/BUILD.bazel b/aosp/tools/lib/bpf/BUILD.bazel
+new file mode 100644
+--- /dev/null
++++ b/aosp/tools/lib/bpf/BUILD.bazel
+@@ -0,0 +1,14 @@
++package(default_visibility = ["//visibility:public"])
++
++filegroup(
++    name = "libbpf_sources",
++    srcs = glob(
++        ["**"],
++        exclude = [
++            "BUILD.bazel",
++            "**/*.cmd",
++            "**/*.d",
++            "**/*.o",
++            "**/*.a",
++        ],
++    ),
++)
+diff --git a/aosp/tools/lib/subcmd/BUILD.bazel b/aosp/tools/lib/subcmd/BUILD.bazel
+new file mode 100644
+--- /dev/null
++++ b/aosp/tools/lib/subcmd/BUILD.bazel
+@@ -0,0 +1,14 @@
++package(default_visibility = ["//visibility:public"])
++
++filegroup(
++    name = "libsubcmd_sources",
++    srcs = glob(
++        ["**"],
++        exclude = [
++            "BUILD.bazel",
++            "**/*.cmd",
++            "**/*.d",
++            "**/*.o",
++            "**/*.a",
++        ],
++    ),
++)

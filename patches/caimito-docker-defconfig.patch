@@ -1,0 +1,28 @@
+diff --git a/private/devices/google/caimito/BUILD.bazel b/private/devices/google/caimito/BUILD.bazel
+--- a/private/devices/google/caimito/BUILD.bazel
++++ b/private/devices/google/caimito/BUILD.bazel
+@@ -48,6 +48,7 @@ filegroup(
+         # do not sort
+         "//private/devices/google/zumapro:defconfig_fragments",
+         "caimito_defconfig",
++        "docker_defconfig",
+     ],
+ )
+diff --git a/private/devices/google/caimito/docker_defconfig b/private/devices/google/caimito/docker_defconfig
+new file mode 100644
+--- /dev/null
++++ b/private/devices/google/caimito/docker_defconfig
+@@ -0,0 +1,13 @@
++CONFIG_PID_NS=y
++CONFIG_USER_NS=y
++CONFIG_CGROUP_PIDS=y
++CONFIG_CGROUP_DEVICE=y
++CONFIG_BRIDGE_NETFILTER=y
++CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y
++
++# These optional modules fail modpost in this GKI tree because they reference
++# non-exported helpers. They are not needed for Docker/container support.
++# CONFIG_PPTP is not set
++# CONFIG_USB_RTL8150 is not set
++# CONFIG_BT is not set
++# CONFIG_TIPC is not set
