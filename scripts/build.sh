@@ -15,6 +15,7 @@ tools/bazel --batch \
   --config=caimito \
   --jobs="${BAZEL_JOBS:-2}" \
   --local_cpu_resources="${BAZEL_CPUS:-2}" \
+  --kernel_package=@//aosp \
   //private/devices/google/caimito:zumapro_caimito_dist
 
 mkdir -p "$repo_root/artifacts"
