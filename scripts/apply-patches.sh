@@ -84,10 +84,16 @@ chmod +x aosp/scripts/config
 for opt in PID_NS USER_NS CGROUP_PIDS CGROUP_DEVICE BRIDGE_NETFILTER NETFILTER_XT_MATCH_ADDRTYPE OVERLAY_FS VETH BRIDGE NET_NS; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -e "$opt"
 done
+for opt in TIPC TIPC_DIAG; do
+  aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -m "$opt"
+done
 for opt in BT BT_BCM BT_RFCOMM BT_HIDP BT_HCIBTSDIO BT_HCIUART; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -m "$opt"
 done
-for opt in BT_BNEP BT_HCIBTUSB BT_HCIVHCI BT_QCA PPTP USB_RTL8150 TIPC; do
+for opt in BT_HCIUART_BCM BT_HCIUART_QCA TIPC_MEDIA_UDP TIPC_CRYPTO; do
+  aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -e "$opt"
+done
+for opt in BT_BNEP BT_HCIBTUSB BT_HCIVHCI PPTP USB_RTL8150; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -d "$opt"
 done
 python3 - <<'PY'
@@ -103,6 +109,9 @@ remove_exact = {
     "CONFIG_KSU=y",
     "CONFIG_BT_BCM=m",
     "CONFIG_BT_QCA=m",
+    "CONFIG_TIPC_DIAG=m",
+    "CONFIG_TIPC_MEDIA_UDP=y",
+    "CONFIG_TIPC_CRYPTO=y",
 }
 lines = []
 for line in p.read_text().splitlines():
@@ -117,12 +126,16 @@ bt_lines = [
     "CONFIG_BT_HIDP=m",
     "CONFIG_BT_HCIBTSDIO=m",
     "CONFIG_BT_HCIUART=m",
+    "CONFIG_BT_HCIUART_BCM=y",
+    "CONFIG_BT_HCIUART_QCA=y",
 ]
 lines = [line for line in lines if not line.startswith("CONFIG_BT")]
 out = []
 inserted = False
 for line in lines:
     out.append(line)
+    if line == "CONFIG_IP6_NF_RAW=y":
+        out.append("CONFIG_TIPC=m")
     if line == "CONFIG_CAN=m" and not inserted:
         out.extend(bt_lines)
         inserted = True
@@ -140,8 +153,6 @@ disabled_modules = {
     "drivers/bluetooth/btqca.ko",
     "drivers/net/ppp/pptp.ko",
     "drivers/net/usb/rtl8150.ko",
-    "net/tipc/diag.ko",
-    "net/tipc/tipc.ko",
 }
 lines = []
 for line in p.read_text().splitlines():
