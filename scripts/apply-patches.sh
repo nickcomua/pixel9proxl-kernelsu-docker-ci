@@ -84,7 +84,7 @@ chmod +x aosp/scripts/config
 for opt in PID_NS USER_NS CGROUP_PIDS CGROUP_DEVICE BRIDGE_NETFILTER NETFILTER_XT_MATCH_ADDRTYPE OVERLAY_FS VETH BRIDGE NET_NS; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -e "$opt"
 done
-for opt in BT BT_RFCOMM BT_HIDP BT_HCIBTSDIO BT_HCIUART; do
+for opt in BT BT_BCM BT_RFCOMM BT_HIDP BT_HCIBTSDIO BT_HCIUART; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -m "$opt"
 done
 for opt in BT_BNEP BT_HCIBTUSB BT_HCIVHCI BT_QCA PPTP USB_RTL8150 TIPC; do
@@ -112,6 +112,7 @@ for line in p.read_text().splitlines():
     lines.append(line)
 bt_lines = [
     "CONFIG_BT=m",
+    "CONFIG_BT_BCM=m",
     "CONFIG_BT_RFCOMM=m",
     "CONFIG_BT_HIDP=m",
     "CONFIG_BT_HCIBTSDIO=m",
