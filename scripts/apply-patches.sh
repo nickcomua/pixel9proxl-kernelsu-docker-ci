@@ -73,15 +73,15 @@ PY
 
 python3 - <<'PY'
 from pathlib import Path
+import re
 
 p = Path("aosp/scripts/setlocalversion")
 text = p.read_text()
-needle = "scm_version()\n\n{"
-replacement = 'scm_version()\n\n{\n\tprintf "%s" "-android14-11-gbd23337e42e7-ab14791245"\n\treturn\n'
-if replacement not in text:
-    if needle not in text:
+replacement = 'scm_version()\n{\n\tprintf "%s" "-android14-11-gbd23337e42e7-ab14791245"\n\treturn\n'
+if 'printf "%s" "-android14-11-gbd23337e42e7-ab14791245"' not in text:
+    text, count = re.subn(r"scm_version\(\)\n\s*\{", replacement, text, count=1)
+    if count != 1:
         raise SystemExit("setlocalversion scm_version() shape not found")
-    text = text.replace(needle, replacement, 1)
 p.write_text(text)
 PY
 
