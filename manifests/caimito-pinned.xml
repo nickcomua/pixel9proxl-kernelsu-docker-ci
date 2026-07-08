@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote name="aosp" fetch="https://android.googlesource.com/"/>
+  
+  <default remote="aosp" revision="android-gs-caimito-6.1-android16" sync-j="4"/>
+  
+  <project name="kernel/build" path="build/kernel" revision="6483b5a6b74251440b266536c2dbc902a4fa3cf2" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner">
+    <linkfile src="kleaf/bazel.sh" dest="tools/bazel"/>
+    <linkfile src="build.sh" dest="build/build.sh"/>
+    <linkfile src="build_abi.sh" dest="build/build_abi.sh"/>
+    <linkfile src="build_test.sh" dest="build/build_test.sh"/>
+    <linkfile src="build_utils.sh" dest="build/build_utils.sh"/>
+    <linkfile src="config.sh" dest="build/config.sh"/>
+    <linkfile src="envsetup.sh" dest="build/envsetup.sh"/>
+    <linkfile src="_setup_env.sh" dest="build/_setup_env.sh"/>
+    <linkfile src="multi-switcher.sh" dest="build/multi-switcher.sh"/>
+    <linkfile src="abi" dest="build/abi"/>
+    <linkfile src="static_analysis" dest="build/static_analysis"/>
+  </project>
+  <project name="kernel/common" path="aosp" revision="bd23337e42e794964a89f47596daf1209a25ee1a" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner">
+    <linkfile src="build.config.constants" dest="common/build.config.constants"/>
+    <linkfile src="modules.bzl" dest="common/modules.bzl"/>
+  </project>
+  <project name="kernel/configs" revision="fc03a79ca1b7ced506dfacbcfcc891c9b2ab11eb" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16"/>
+  <project name="kernel/devices/google/akita" path="private/devices/google/akita" revision="f14224b6d2e418ed4bf3a1edbfc92437f1b11bb4" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="akita,partner">
+    <linkfile src="build_akita.sh" dest="build_akita.sh"/>
+    <linkfile src="device.bazelrc" dest=".d5.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/bluejay" path="private/devices/google/bluejay" revision="4dfaec9d2702c67a33093e2bf8cab0c9dd9db075" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="bluejay,partner">
+    <linkfile src="build_bluejay.sh" dest="build_bluejay.sh"/>
+    <linkfile src="device.bazelrc" dest=".d14.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/caimito" path="private/devices/google/caimito" revision="38a058681d6cefbb95200dc8a5348939773eb9d6" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="caimito,partner">
+    <linkfile src="build_caimito.sh" dest="build_caimito.sh"/>
+    <linkfile src="device.bazelrc" dest=".d7.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/comet" path="private/devices/google/comet" revision="c826c913562277d8d7ee4c089d4a0aab54507637" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="comet,partner">
+    <linkfile src="build_comet.sh" dest="build_comet.sh"/>
+    <linkfile src="device.bazelrc" dest=".d8.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/common" path="private/devices/google/common" revision="aa761194c6f21d01a182cc064e382946f8ddc53b" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner">
+    <linkfile src="bazel.WORKSPACE" dest="WORKSPACE"/>
+    <linkfile src="device.bazelrc" dest="device.bazelrc"/>
+    <linkfile src="update_symbol_list.sh" dest="update_symbol_list.sh"/>
+    <linkfile src="kleaf/common.BUILD.bazel" dest="common/BUILD.bazel"/>
+  </project>
+  <project name="kernel/devices/google/felix" path="private/devices/google/felix" revision="b650e852ff54108540ce739002f39e068e5beb39" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="felix,partner">
+    <linkfile src="build_felix.sh" dest="build_felix.sh"/>
+    <linkfile src="device.bazelrc" dest=".d2.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/gs101" path="private/devices/google/gs101" revision="f87212fc996b154b017736e5cd5497a943b82166" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner">
+    <linkfile src="build_gs101.sh" dest="build_gs101.sh"/>
+    <linkfile src="device.bazelrc" dest=".c1.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/gs201" path="private/devices/google/gs201" revision="1dc1f17bf51f47c9caed1b27360bc072e0bcd0ee" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner">
+    <linkfile src="build_gs201.sh" dest="build_gs201.sh"/>
+    <linkfile src="device.bazelrc" dest=".c2.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/lynx" path="private/devices/google/lynx" revision="588498b0583dafc0ffaf10c5268f0ecbdfdac189" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="lynx,partner">
+    <linkfile src="build_lynx.sh" dest="build_lynx.sh"/>
+    <linkfile src="device.bazelrc" dest=".d15.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/pantah" path="private/devices/google/pantah" revision="29704a3a1b95bbaad98eb3e5983f745614660e0e" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="pantah,partner">
+    <linkfile src="build_pantah.sh" dest="build_pantah.sh"/>
+    <linkfile src="device.bazelrc" dest=".d1.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/raviole" path="private/devices/google/raviole" revision="eb4e5bcac9f7d97fd80cb3c8f2e59325e82ff515" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner,raviole">
+    <linkfile src="build_raviole.sh" dest="build_raviole.sh"/>
+    <linkfile src="device.bazelrc" dest=".d13.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/shusky" path="private/devices/google/shusky" revision="d1f1a5bb9d1002d21262ba13b5aabf7c47ce9c14" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner,shusky">
+    <linkfile src="build_shusky.sh" dest="build_shusky.sh"/>
+    <linkfile src="device.bazelrc" dest=".d4.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/tangorpro" path="private/devices/google/tangorpro" revision="e36c183aafa31d0004c5bda8bce74f75247f6698" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner,tangorpro">
+    <linkfile src="build_tangorpro.sh" dest="build_tangorpro.sh"/>
+    <linkfile src="device.bazelrc" dest=".d3.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/tegu" path="private/devices/google/tegu" revision="9c3acdfc204f5ea4f621428d4b234ce1bc442a97" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner,tegu">
+    <linkfile src="build_tegu.sh" dest="build_tegu.sh"/>
+    <linkfile src="device.bazelrc" dest=".d9.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/zuma" path="private/devices/google/zuma" revision="b0dfdfc378dd37d7c1662bbd942240d55db83d68" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner">
+    <linkfile src="build_zuma.sh" dest="build_zuma.sh"/>
+    <linkfile src="device.bazelrc" dest=".c3.bazelrc"/>
+  </project>
+  <project name="kernel/devices/google/zumapro" path="private/devices/google/zumapro" revision="915d1f0ccf770fc1d9af1ae5223331c13029d51b" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner">
+    <linkfile src="build_zumapro.sh" dest="build_zumapro.sh"/>
+    <linkfile src="device.bazelrc" dest=".c4.bazelrc"/>
+  </project>
+  <project name="kernel/google-modules/amplifiers" path="private/google-modules/amplifiers" revision="ad7b4721f9fcea714dd0e36f0bfbc1a2cc07b641" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/aoc" path="private/google-modules/aoc" revision="25c9d56baa4be1dd70a9fa0c6301a2c145807909" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/aoc-ipc" path="private/google-modules/aoc_ipc" revision="6257765b0bf4a9c0b160c06d1935fac56d7f84d2" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/bluetooth/broadcom" path="private/google-modules/bluetooth/broadcom" revision="1694e5038e55b29ff838f7185e3f02da2deb2ddb" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/bluetooth/qcom" path="private/google-modules/bluetooth/qcom" revision="6876c849da40edb0bb4bf22da3e1172869f1ea14" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/bms" path="private/google-modules/bms" revision="ca6a968e9502b20862abca3204c359743306756b" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/display/common" path="private/google-modules/display/common" revision="6015dd929e8a256bb129bc4a315681baac97847d" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/display/panels/caimito" path="private/google-modules/display/panels/caimito" revision="f7e61c05094c333a180a8fafdbdbc166b1561a52" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/display/panels/tegu" path="private/google-modules/display/panels/tegu" revision="4c1e20e9ff0e106dd0395928cc270abac9f98d03" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/display/samsung" path="private/google-modules/display/samsung" revision="b7ce8097a8ec334143f2ec6397c5c72e62557b27" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/edgetpu/abrolhos" path="private/google-modules/edgetpu/abrolhos" revision="fde57398df380e34cc4a06f95a5bd931516d4b71" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/edgetpu/janeiro" path="private/google-modules/edgetpu/janeiro" revision="b9752e746973e9b9a85f39aed7df225e4e23213a" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/edgetpu/rio" path="private/google-modules/edgetpu/rio" revision="ff69a09bd9854786c1704c4369f2298dae4e4c72" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/fingerprint/fpc" path="private/google-modules/fingerprint/fpc" revision="3a9f74be04d17ff56a152502c0ce5ba4a397da19" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/fingerprint/goodix" path="private/google-modules/fingerprint/goodix" revision="0dd47047cb36174235eda28772749c350a38085f" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/fingerprint/qcom/qfs4008" path="private/google-modules/fingerprint/qcom/qfs4008" revision="43989992e718a9c99b6c6eba591e7b1005ad7035" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/gps/broadcom/bcm47765" path="private/google-modules/gps/broadcom/bcm47765" revision="f6ffd671258eec828f3b6ae9ffb6331487da27b5" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/gpu" path="private/google-modules/gpu" revision="3372cb0ffe779efd9b7507174c61d0e48822b5e2" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/gxp/gs201" path="private/google-modules/gxp/gs201" revision="1625d4d70b950b295a8b08061beb8aa779469f87" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/gxp/zuma" path="private/google-modules/gxp/zuma" revision="41a585e40a021252468c31e3e4ee5f8c0bb02b28" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/hdcp/samsung" path="private/google-modules/hdcp/samsung" revision="05a88d28a8d80144cba9ca09ed781220d54a50bf" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/lwis" path="private/google-modules/lwis" revision="facc3127efa801dc1f2d1f9e8b8535e51a1035d7" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/misc" path="private/google-modules/misc" revision="2a6728883a3d19eea3c02e0b9469cf5ff23f2d43" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/nfc" path="private/google-modules/nfc" revision="b96ab17cff5ce99738430e7eae0fa73de3f05d92" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/perf" path="private/google-modules/perf" revision="7de380977283cc556eb6d00f68acb45f34c37eab" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/power/mitigation" path="private/google-modules/power/mitigation" revision="e384f969f05fbdcdc4d4e50ad151f323d06698ae" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/power/reset" path="private/google-modules/power/reset" revision="b8c2d0296ad6b632eb4ec2b56a63ae52236c384b" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/radio/samsung/s5300" path="private/google-modules/radio/samsung/s5300" revision="db44a382751bfb936d145e45088a8ec6ab0a6ce6" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/radio/samsung/s5400" path="private/google-modules/radio/samsung/s5400" revision="1f47ade18ce8cb11750d1f079eb858f5cc6b1fc3" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/sensors/hall_sensor" path="private/google-modules/sensors/hall_sensor" revision="e93ae8f30ab780f8f025e780505fdc593430645a" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/soc/gs" path="private/google-modules/soc/gs" revision="3045cdcfebf91dc1d3bb3170967d23169d3b65af" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/touch/common" path="private/google-modules/touch/common" revision="b98656dc76a3c770f3904ed7d1d881d8c1719a94" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/touch/focaltech_touch" path="private/google-modules/touch/focaltech" revision="1f631813e7dbf8c272da5fafefc51434908f72eb" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/touch/fts_touch" path="private/google-modules/touch/fts" revision="aa2f47d05d7b4c6465790648db57cb49f7c7a8d8" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/touch/goodix_touch" path="private/google-modules/touch/goodix" revision="fd4618d5f7426cf99a9013bc17ecc6505c757efa" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/touch/novatek_touch" path="private/google-modules/touch/novatek" revision="90147ddb4827fe8686cac0a2dd35146ff4054a4d" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/touch/sec_touch" path="private/google-modules/touch/sec" revision="133ae0339ff7bf393c0183c6f608f033500a14dc" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/touch/synaptics_touch" path="private/google-modules/touch/synaptics" revision="165d0b71573316e125edf50486da3fed6298ba85" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/trusty" path="private/google-modules/trusty" revision="ecc74ac33b9959497dfe611cf0a1b996e64a57b8" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/typec" path="private/google-modules/typec" revision="333f14ac78cd2294343ed3edbf917776b13f4c43" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/uwb/qorvo/dw3000" path="private/google-modules/uwb/qorvo/dw3000" revision="e5d82c8b8a1817a2339044a38656187140252c29" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/uwb/qorvo/qm35" path="private/google-modules/uwb/qorvo/qm35" revision="a853835f1235a173d45c8cdddceb15b76412d73d" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/video/gchips" path="private/google-modules/video/gchips" revision="cb49627976f56d4c3b0856fcede4b698602aba19" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/wlan/bcmdhd/bcm4383" path="private/google-modules/wlan/bcm4383" revision="aeaed9991c06c2b673939df9835b903b9b1bd981" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/wlan/bcmdhd/bcm4389" path="private/google-modules/wlan/bcm4389" revision="f4f47d23121928735adfe73a133a7c93542fe11f" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/wlan/bcmdhd/bcm4390" path="private/google-modules/wlan/bcm4390" revision="ce28326ebed985a791b1a6517abe73fd0c7dcf73" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/wlan/bcmdhd/bcm4398" path="private/google-modules/wlan/bcm4398" revision="7d321783e403cb1977d14c3b631f7b544af29d13" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/wlan/qcom/wcn6740/cnss2" path="private/google-modules/wlan/wcn6740/cnss2" revision="63d4fa446764b4caf441fd7ab404ee355e6113d1" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/wlan/qcom/wcn6740/wlan" path="private/google-modules/wlan/wcn6740/wlan" revision="ccf58ba423c2684c6c599c9c8580a93c60a6ae96" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/wlan/syna/dhd43752p" path="private/google-modules/wlan/dhd43752p" revision="2553adbc8ba8206946b8bde3e0f725ba6674b11b" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/google-modules/wlan/wlan_ptracker" path="private/google-modules/wlan/wlan_ptracker" revision="85134af336ee9b0b369b6f653e549a59570aebe0" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="kernel/prebuilts/build-tools" path="prebuilts/kernel-build-tools" revision="e905be252a53d20c52bd9e59df3ff8fdd46b9eab" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="platform/build/bazel_common_rules" path="build/bazel_common_rules" revision="a61d6ae0f355bdf5da473291233985f51f6fe5b9" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="platform/external/bazel-skylib" path="external/bazel-skylib" revision="f998e5dc13c03f0eae9e373263d3afff0932c738" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="platform/external/python/absl-py" path="external/python/absl-py" revision="2f199605a9875340569e039657f8b4c72d51b84d" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="platform/external/stardoc" path="external/stardoc" revision="e83f522ee95419e55d2c5654aa6e0143beeef595" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="platform/prebuilts/bazel/linux-x86_64" path="prebuilts/bazel/linux-x86_64" revision="7bfbec9e829bbae6816d5f39aba345df76e627c1" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="platform/prebuilts/build-tools" path="prebuilts/build-tools" revision="c181f690fe9b76142b3203c2ab959b6299d4d1fd" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="platform/prebuilts/clang/host/linux-x86" path="prebuilts/clang/host/linux-x86" revision="7775eb113f960bc69a780b621d03a715914d4bca" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8" path="prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8" revision="f6d40532273c8bd628b960ecc0970c7294c8d891" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="platform/prebuilts/jdk/jdk11" path="prebuilts/jdk/jdk11" revision="649eec4416e2ed6298af49a56876772767a0e5ae" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="platform/system/tools/mkbootimg" path="tools/mkbootimg" revision="615a1fced5f8e2755642d30357674d3bfa21b85e" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+  <project name="toolchain/prebuilts/ndk/r23" path="prebuilts/ndk-r23" revision="19ac7e4eded12adb99d4f613490dde6dd0e72664" upstream="android-gs-caimito-6.1-android16" dest-branch="android-gs-caimito-6.1-android16" groups="partner"/>
+</manifest>
