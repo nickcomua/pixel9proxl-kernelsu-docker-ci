@@ -29,14 +29,15 @@ python3 - <<'PY'
 from pathlib import Path
 
 filegroups = {
-    "aosp/tools/bpf/resolve_btfids/BUILD.bazel": ("resolve_btfids_sources", True),
-    "aosp/tools/build/BUILD.bazel": ("build_tool_sources", False),
-    "aosp/tools/lib/bpf/BUILD.bazel": ("libbpf_sources", True),
-    "aosp/tools/lib/subcmd/BUILD.bazel": ("libsubcmd_sources", True),
+    "aosp/tools/bpf/resolve_btfids": ("resolve_btfids_sources", True),
+    "aosp/tools/build": ("build_tool_sources", False),
+    "aosp/tools/lib/bpf": ("libbpf_sources", True),
+    "aosp/tools/lib/subcmd": ("libsubcmd_sources", True),
 }
 
-for path, (name, exclude_archives) in filegroups.items():
+for directory, (name, exclude_archives) in filegroups.items():
     excludes = [
+        "BUILD",
         "BUILD.bazel",
         "**/*.cmd",
         "**/*.d",
@@ -44,7 +45,7 @@ for path, (name, exclude_archives) in filegroups.items():
     ]
     if exclude_archives:
         excludes.append("**/*.a")
-    Path(path).write_text(
+    content = (
         'package(default_visibility = ["//visibility:public"])\n\n'
         "filegroup(\n"
         f'    name = "{name}",\n'
@@ -56,6 +57,9 @@ for path, (name, exclude_archives) in filegroups.items():
         "    ),\n"
         ")\n"
     )
+    path = Path(directory)
+    path.joinpath("BUILD").write_text(content)
+    path.joinpath("BUILD.bazel").write_text(content)
 
 PY
 
