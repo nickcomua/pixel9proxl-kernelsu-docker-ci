@@ -149,8 +149,6 @@ from pathlib import Path
 
 p = Path("aosp/modules.bzl")
 disabled_modules = {
-    "drivers/bluetooth/btbcm.ko",
-    "drivers/bluetooth/btqca.ko",
     "drivers/net/ppp/pptp.ko",
     "drivers/net/usb/rtl8150.ko",
 }
