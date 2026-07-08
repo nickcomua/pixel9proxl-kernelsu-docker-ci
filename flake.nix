@@ -110,6 +110,7 @@
         } ''
           bash -n ${./scripts/sync-source.sh}
           bash -n ${./scripts/apply-patches.sh}
+          bash -n ${./scripts/boot-test.sh}
           bash -n ${./scripts/build.sh}
           bash -n ${./scripts/nix-build.sh}
           bash -n ${./scripts/validate-artifacts.sh}

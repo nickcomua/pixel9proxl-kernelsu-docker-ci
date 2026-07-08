@@ -35,6 +35,16 @@ The job is large. It needs disk, network, and time. GitHub-hosted runners may ti
 
 Artifacts are copied to `artifacts/`.
 
+## Non-Flashing Boot Test
+
+With the phone in fastboot mode:
+
+```bash
+./scripts/boot-test.sh artifacts-local-forced-source
+```
+
+The script validates the artifact directory first, then runs `fastboot boot boot.img`. It does not flash partitions.
+
 ## Notes
 
 This repo stores only scripts and patches. It does not vendor Google's kernel source tree or local build outputs.
