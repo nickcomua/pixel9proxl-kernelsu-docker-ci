@@ -65,9 +65,11 @@ from pathlib import Path
 p = Path("build/kernel/kleaf/impl/stamp.bzl")
 text = p.read_text()
 old = '        stable_scmversion_cmd = _get_status_at_path(ctx, "STABLE_SCMVERSIONS", \'"${KERNEL_DIR}"\')'
-new = """        stable_scmversion_cmd = "[ -f ${KERNEL_DIR}/.scmversion ] && cat ${KERNEL_DIR}/.scmversion || " + _get_status_at_path(ctx, "STABLE_SCMVERSIONS", '"${KERNEL_DIR}"')"""
+new = '        stable_scmversion_cmd = "echo \'-gbd23337e42e7-ab14791245\'"'
 if new not in text:
-    text = text.replace(old, new, 1)
+    text, count = text.replace(old, new, 1), text.count(old)
+    if count != 1:
+        raise SystemExit("stamp.bzl stable_scmversion_cmd shape not found")
 p.write_text(text)
 PY
 
@@ -77,8 +79,8 @@ import re
 
 p = Path("aosp/scripts/setlocalversion")
 text = p.read_text()
-replacement = 'scm_version()\n{\n\tprintf "%s" "-android14-11-gbd23337e42e7-ab14791245"\n\treturn\n'
-if 'printf "%s" "-android14-11-gbd23337e42e7-ab14791245"' not in text:
+replacement = 'scm_version()\n{\n\treturn\n'
+if 'scm_version()\n{\n\treturn\n' not in text:
     text, count = re.subn(r"scm_version\(\)\n\s*\{", replacement, text, count=1)
     if count != 1:
         raise SystemExit("setlocalversion scm_version() shape not found")
