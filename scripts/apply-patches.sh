@@ -8,20 +8,22 @@ cd "$root"
 
 printf '%s\n' "-gbd23337e42e7-ab14791245" > aosp/.scmversion
 
-(
-  cd aosp
-  if [ ! -d KernelSU-Next ]; then
-    git clone https://github.com/KernelSU-Next/KernelSU-Next
-  fi
-  cd KernelSU-Next
-  git fetch --tags --force
-  git checkout v3.3.0
-  cd ..
-  sh KernelSU-Next/kernel/setup.sh v3.3.0
-  rm -rf drivers/kernelsu
-  cp -a KernelSU-Next/kernel drivers/kernelsu
-  cp -a KernelSU-Next/uapi drivers/kernelsu/uapi
-)
+if [[ "${ENABLE_KSU:-1}" == "1" ]]; then
+  (
+    cd aosp
+    if [ ! -d KernelSU-Next ]; then
+      git clone https://github.com/KernelSU-Next/KernelSU-Next
+    fi
+    cd KernelSU-Next
+    git fetch --tags --force
+    git checkout v3.3.0
+    cd ..
+    sh KernelSU-Next/kernel/setup.sh v3.3.0
+    rm -rf drivers/kernelsu
+    cp -a KernelSU-Next/kernel drivers/kernelsu
+    cp -a KernelSU-Next/uapi drivers/kernelsu/uapi
+  )
+fi
 
 python3 - <<'PY'
 from pathlib import Path
@@ -117,7 +119,6 @@ remove_exact = {
     "CONFIG_USER_NS=y",
     "CONFIG_CGROUP_DEVICE=y",
     "CONFIG_CGROUP_PIDS=y",
-    "CONFIG_KSU=y",
     "CONFIG_BRIDGE_NETFILTER=y",
     "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y",
     "CONFIG_TIPC=m",
@@ -165,6 +166,8 @@ for line in lines:
         inserted = True
 if not inserted:
     out.extend(bt_lines)
+if __import__("os").environ.get("ENABLE_KSU", "1") == "1":
+    out.append("CONFIG_KSU=y")
 p.write_text("\n".join(out) + "\n")
 PY
 

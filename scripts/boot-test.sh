@@ -6,6 +6,7 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 boot_timeout="${BOOT_TIMEOUT_SECONDS:-60}"
 
 cd "$repo_root"
+expected_linux_version="$(strings "${artifact_dir}/Image" | grep -m 1 '^Linux version ' || true)"
 
 "$repo_root/scripts/validate-artifacts.sh" "$artifact_dir" >/dev/null
 
@@ -39,6 +40,14 @@ if [[ "$boot_completed" != "1" ]]; then
 fi
 
 echo "Android booted"
+live_linux_version="$(adb shell cat /proc/version 2>/dev/null | tr -d '\r' || true)"
+if [[ -n "${expected_linux_version}" && "${live_linux_version}" != "${expected_linux_version}" ]]; then
+  echo "Booted kernel does not match ${artifact_dir}/Image" >&2
+  echo "expected: ${expected_linux_version}" >&2
+  echo "live:     ${live_linux_version}" >&2
+  echo "This usually means the tested boot image failed and the device recovered into the installed slot kernel." >&2
+  exit 4
+fi
 adb shell uname -a
 adb shell getprop ro.boot.slot_suffix
 adb shell getprop init.svc.surfaceflinger

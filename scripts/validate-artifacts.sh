@@ -6,6 +6,7 @@ expected_release="${EXPECTED_KERNEL_RELEASE:-6.1.157-android14-11-gbd23337e42e7-
 forbidden_release="${FORBIDDEN_KERNEL_RELEASE:-6.1.124-android14-11-g8d713f9e8e7b-ab13202960}"
 tmpdir="$(mktemp -d)"
 trap 'rm -rf "${tmpdir}"' EXIT
+require_ksu="${REQUIRE_KSU:-1}"
 
 required_files=(
   boot.img
@@ -27,7 +28,6 @@ done
 
 config="${artifact_dir}/.config"
 required_config=(
-  CONFIG_KSU=y
   CONFIG_NAMESPACES=y
   CONFIG_PID_NS=y
   CONFIG_IPC_NS=y
@@ -54,6 +54,10 @@ required_config=(
   CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y
   CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
 )
+
+if [[ "${require_ksu}" == "1" ]]; then
+  required_config=(CONFIG_KSU=y "${required_config[@]}")
+fi
 
 for symbol in "${required_config[@]}"; do
   if ! grep -qxF "${symbol}" "${config}"; then
