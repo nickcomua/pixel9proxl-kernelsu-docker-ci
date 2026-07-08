@@ -35,9 +35,9 @@ jobs:
             artifacts/vendor_kernel_boot.img
             artifacts/dtbo.img
             artifacts/vendor_dlkm.img
-          artifacts/system_dlkm.img
-          artifacts/Image
-          artifacts/.config
-          artifacts/validation-report.txt
+            artifacts/system_dlkm.img
+            artifacts/Image
+            artifacts/.config
+            artifacts/validation-report.txt
           if-no-files-found: error
           retention-days: 14
