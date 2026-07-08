@@ -55,46 +55,6 @@ for path, (name, exclude_archives) in filegroups.items():
         ")\n"
     )
 
-build = Path("private/devices/google/caimito/BUILD.bazel")
-text = build.read_text()
-needle = '        "caimito_defconfig",\n'
-if '        "docker_defconfig",\n' not in text:
-    text = text.replace(needle, needle + '        "docker_defconfig",\n', 1)
-build.write_text(text)
-
-Path("private/devices/google/caimito/docker_defconfig").write_text("""\
-CONFIG_PID_NS=y
-CONFIG_USER_NS=y
-CONFIG_NAMESPACES=y
-CONFIG_IPC_NS=y
-CONFIG_UTS_NS=y
-CONFIG_NET_NS=y
-CONFIG_CGROUPS=y
-CONFIG_CGROUP_CPUACCT=y
-CONFIG_CGROUP_PIDS=y
-CONFIG_CGROUP_DEVICE=y
-CONFIG_CGROUP_FREEZER=y
-CONFIG_CGROUP_SCHED=y
-CONFIG_CPUSETS=y
-CONFIG_MEMCG=y
-CONFIG_KEYS=y
-CONFIG_SECCOMP=y
-CONFIG_SECCOMP_FILTER=y
-CONFIG_OVERLAY_FS=y
-CONFIG_VETH=y
-CONFIG_BRIDGE=y
-CONFIG_BRIDGE_NETFILTER=y
-CONFIG_IP_NF_FILTER=y
-CONFIG_IP_NF_TARGET_MASQUERADE=y
-CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y
-CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
-
-# These optional modules fail modpost in this GKI tree because they reference
-# non-exported helpers. They are not needed for Docker/container support.
-# CONFIG_PPTP is not set
-# CONFIG_USB_RTL8150 is not set
-# CONFIG_TIPC is not set
-""")
 PY
 
 python3 "$repo_root/scripts/patch-common-kernels.py" build/kernel/kleaf/common_kernels.bzl
@@ -135,9 +95,15 @@ remove_exact = {
     "# CONFIG_TIPC is not set",
     "# CONFIG_PPTP is not set",
     "# CONFIG_USB_RTL8150 is not set",
-    "CONFIG_PID_NS=y",
-    "CONFIG_NET_NS=y",
+    "# CONFIG_BT_BNEP is not set",
+    "# CONFIG_BT_HCIBTUSB is not set",
+    "# CONFIG_BT_HCIVHCI is not set",
+    "CONFIG_USER_NS=y",
+    "CONFIG_CGROUP_DEVICE=y",
+    "CONFIG_CGROUP_PIDS=y",
     "CONFIG_KSU=y",
+    "CONFIG_BRIDGE_NETFILTER=y",
+    "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y",
     "CONFIG_BT_BCM=m",
     "CONFIG_BT_QCA=m",
     "CONFIG_TIPC_DIAG=m",
@@ -165,6 +131,16 @@ out = []
 inserted = False
 for line in lines:
     out.append(line)
+    if line == "CONFIG_UCLAMP_TASK_GROUP=y":
+        out.append("CONFIG_CGROUP_PIDS=y")
+    if line == "CONFIG_CPUSETS=y":
+        out.append("CONFIG_CGROUP_DEVICE=y")
+    if line == "CONFIG_NAMESPACES=y":
+        out.append("CONFIG_USER_NS=y")
+    if line == "CONFIG_NETFILTER=y":
+        out.append("CONFIG_BRIDGE_NETFILTER=y")
+    if line == "CONFIG_NETFILTER_XT_TARGET_TCPMSS=y":
+        out.append("CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y")
     if line == "CONFIG_IP6_NF_RAW=y":
         out.append("CONFIG_TIPC=m")
     if line == "CONFIG_CAN=m" and not inserted:
