@@ -112,6 +112,7 @@
           bash -n ${./scripts/apply-patches.sh}
           bash -n ${./scripts/build.sh}
           bash -n ${./scripts/nix-build.sh}
+          bash -n ${./scripts/validate-artifacts.sh}
           touch "$out"
         '';
       }

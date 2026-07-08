@@ -27,8 +27,4 @@ cp -f out/caimito/dist/system_dlkm.img "$repo_root/artifacts/"
 cp -f out/caimito/dist/Image "$repo_root/artifacts/"
 cp -f out/caimito/dist/.config "$repo_root/artifacts/"
 
-strings "$repo_root/artifacts/vendor_kernel_boot.img" | grep '6.1.157-android14-11-gbd23337e42e7-ab14791245'
-grep -q '^CONFIG_KSU=y$' "$repo_root/artifacts/.config"
-grep -q '^CONFIG_USER_NS=y$' "$repo_root/artifacts/.config"
-grep -q '^CONFIG_CGROUP_DEVICE=y$' "$repo_root/artifacts/.config"
-grep -q '^CONFIG_OVERLAY_FS=y$' "$repo_root/artifacts/.config"
+"$repo_root/scripts/validate-artifacts.sh" "$repo_root/artifacts"
