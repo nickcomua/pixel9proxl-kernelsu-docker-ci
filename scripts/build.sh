@@ -13,9 +13,12 @@ tools/bazel --batch \
   run \
   --config=stamp \
   --config=caimito \
+  --config=no_download_gki_fips140 \
   --jobs="${BAZEL_JOBS:-2}" \
   --local_cpu_resources="${BAZEL_CPUS:-2}" \
   --kernel_package=@//aosp \
+  --no//build/kernel/kleaf:use_prebuilt_gki \
+  --no//build/kernel/kleaf:use_signed_prebuilts \
   //private/devices/google/caimito:zumapro_caimito_dist
 
 mkdir -p "$repo_root/artifacts"

@@ -1,4 +1,5 @@
 work/
 artifacts/
+artifacts-local-*/
 *.log
 .DS_Store

@@ -80,6 +80,18 @@ PY
 
 python3 "$repo_root/scripts/patch-common-kernels.py" build/kernel/kleaf/common_kernels.bzl
 
+python3 - <<'PY'
+from pathlib import Path
+
+p = Path("build/kernel/kleaf/impl/stamp.bzl")
+text = p.read_text()
+old = '        stable_scmversion_cmd = _get_status_at_path(ctx, "STABLE_SCMVERSIONS", \'"${KERNEL_DIR}"\')'
+new = """        stable_scmversion_cmd = "[ -f ${KERNEL_DIR}/.scmversion ] && cat ${KERNEL_DIR}/.scmversion || " + _get_status_at_path(ctx, "STABLE_SCMVERSIONS", '"${KERNEL_DIR}"')"""
+if new not in text:
+    text = text.replace(old, new, 1)
+p.write_text(text)
+PY
+
 chmod +x aosp/scripts/config
 for opt in PID_NS USER_NS CGROUP_PIDS CGROUP_DEVICE BRIDGE_NETFILTER NETFILTER_XT_MATCH_ADDRTYPE OVERLAY_FS VETH BRIDGE NET_NS; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -e "$opt"
