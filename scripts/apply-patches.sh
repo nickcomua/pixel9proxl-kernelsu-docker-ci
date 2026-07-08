@@ -71,6 +71,20 @@ if new not in text:
 p.write_text(text)
 PY
 
+python3 - <<'PY'
+from pathlib import Path
+
+p = Path("aosp/scripts/setlocalversion")
+text = p.read_text()
+needle = "scm_version()\n\n{"
+replacement = 'scm_version()\n\n{\n\tprintf "%s" "-android14-11-gbd23337e42e7-ab14791245"\n\treturn\n'
+if replacement not in text:
+    if needle not in text:
+        raise SystemExit("setlocalversion scm_version() shape not found")
+    text = text.replace(needle, replacement, 1)
+p.write_text(text)
+PY
+
 chmod +x aosp/scripts/config
 for opt in USER_NS CGROUP_DEVICE CGROUP_PIDS BRIDGE_NETFILTER NETFILTER_XT_MATCH_ADDRTYPE; do
   aosp/scripts/config --file aosp/arch/arm64/configs/gki_defconfig -e "$opt"
