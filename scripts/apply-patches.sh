@@ -101,6 +101,7 @@ remove_exact = {
     "CONFIG_PID_NS=y",
     "CONFIG_NET_NS=y",
     "CONFIG_KSU=y",
+    "CONFIG_BT_BCM=m",
     "CONFIG_BT_QCA=m",
 }
 lines = []
@@ -112,7 +113,6 @@ for line in p.read_text().splitlines():
     lines.append(line)
 bt_lines = [
     "CONFIG_BT=m",
-    "CONFIG_BT_BCM=m",
     "CONFIG_BT_RFCOMM=m",
     "CONFIG_BT_HIDP=m",
     "CONFIG_BT_HCIBTSDIO=m",
