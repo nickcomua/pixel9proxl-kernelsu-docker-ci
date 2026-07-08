@@ -39,4 +39,4 @@ Artifacts are copied to `artifacts/`.
 
 This repo stores only scripts and patches. It does not vendor Google's kernel source tree or local build outputs.
 
-Current status: the device dist build completes and produces images/modules, but the direct source GKI `boot.img` rebuild is still being debugged. Do not flash CI artifacts until the `boot.img` kernel string is verified to match the custom source kernel.
+Only use artifacts that pass `scripts/validate-artifacts.sh`. The validator rejects mixed old/new kernel artifacts by checking the expected kernel release string across `boot.img`, `vendor_kernel_boot.img`, `vendor_dlkm.img`, and `system_dlkm.img`, and it checks the KernelSU plus Docker/container kernel config baseline.
