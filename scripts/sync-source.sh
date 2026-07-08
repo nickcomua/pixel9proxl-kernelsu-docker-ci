@@ -20,6 +20,7 @@ cd "$dest"
 if [[ "${USE_MOVING_MANIFEST:-0}" == "1" ]]; then
   repo init -u "$manifest_url" -b "$branch"
 else
-  repo init -u "file://${repo_root}" -m "${pinned_manifest#${repo_root}/}"
+  manifest_revision="$(git -C "$repo_root" rev-parse HEAD)"
+  repo init -u "file://${repo_root}" -b "$manifest_revision" -m "${pinned_manifest#${repo_root}/}"
 fi
 repo sync -c --no-tags --no-clone-bundle -j"$(nproc)"
